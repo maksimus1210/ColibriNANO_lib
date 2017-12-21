@@ -109,7 +109,7 @@ bool LibLoader::open(Descriptor *pDev, const uint32_t devIndex)
 void LibLoader::close(Descriptor dev)
 {
     if (m_open)
-        return m_close(dev);
+        m_close(dev);
 }
 
 bool LibLoader::start(Descriptor dev, SampleRateIndex sr, pCallbackRx p, void *pUserData)
