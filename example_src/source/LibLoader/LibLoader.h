@@ -1,13 +1,22 @@
 #ifndef LIBLOADER_H
 #define LIBLOADER_H
 
-#include <windows.h>
+#ifndef __linux__
+#  include <windows.h>
+#else
+#  include <dlfcn.h>
+#endif
+
 #include <cstdint>
 #include <string>
 
 #include "common.h"
 
-#define COLIBRI_NANO_API __stdcall
+#ifndef __linux__
+#  define COLIBRI_NANO_API __stdcall
+#else
+#  define COLIBRI_NANO_API
+#endif
 
 using namespace std;
 
@@ -54,7 +63,11 @@ public:
      * \param file - full file name.
      * \return if success return true, else false.
      */
+#ifndef __linux__
     bool load(const wstring &file);
+#else
+    bool load(const char *file);
+#endif
 
     /**
      * \brief Library initialization.
@@ -140,7 +153,11 @@ public:
     bool setFrequency(Descriptor dev, uint32_t value);
 
 private:
+#ifndef __linux__
     HMODULE hDLL                              { nullptr };
+#else
+    void *hDLL                                { nullptr };
+#endif
     pVersion m_version                        { nullptr };
     pInformation m_information                { nullptr };
     pDevices m_devices                        { nullptr };

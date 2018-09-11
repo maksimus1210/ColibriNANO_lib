@@ -51,3 +51,7 @@ SOURCES += source/dsp/DspCore.cpp
 
 #############################################################
 include(libs/QCustomPlot/QCustomPlot.pri)
+
+linux {
+    LIBS += -ldl
+}

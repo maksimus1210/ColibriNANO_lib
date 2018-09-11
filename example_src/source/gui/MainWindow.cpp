@@ -6,10 +6,18 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     setupUi(this);
 
+#ifdef Q_OS_LINUX
+    QString libName = qApp->applicationDirPath() + "/libcolibrinano_lib.so";
+    if (!m_loader.load(libName.toLocal8Bit().data())) {
+        QMessageBox::critical(this, windowTitle(), tr("Failed to load colibrinano_lib.dll!"));
+        qApp->quit();
+    }
+#else
     if (!m_loader.load(QString("colibrinano_lib.dll").toStdWString())) {
         QMessageBox::critical(this, windowTitle(), tr("Failed to load colibrinano_lib.dll!"));
         qApp->quit();
     }
+#endif
 
     m_loader.initialize();
 

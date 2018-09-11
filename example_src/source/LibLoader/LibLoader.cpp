@@ -1,8 +1,17 @@
 #include "LibLoader.h"
 
+#ifndef __linux__
 bool LibLoader::load(const wstring &file)
+#else
+bool LibLoader::load(const char *file)
+#endif
 {
+#ifndef __linux__
     hDLL = LoadLibrary(file.data());
+#else
+#  define GetProcAddress dlsym
+    hDLL = dlopen(file, RTLD_LAZY);
+#endif
     if (hDLL == nullptr)
         return false;
 
